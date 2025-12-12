@@ -11,7 +11,7 @@ const About = () => {
           </div>
           <h1 className="text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              About CADemy
+              About CADemyAI
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -25,7 +25,7 @@ const About = () => {
             <div>
               <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Mission</h2>
               <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                CADemy is designed to make learning 3D modeling and Computer-Aided Design (CAD) 
+                CADemyAI is designed to make learning 3D modeling and Computer-Aided Design (CAD) 
                 fun and accessible. We believe that everyone should have the opportunity to learn 
                 these valuable skills through hands-on practice and interactive challenges.
               </p>
@@ -91,72 +91,3 @@ const About = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-3xl shadow-2xl p-10 text-white mb-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-24 -translate-x-24"></div>
-          
-          <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-6 text-center">Technology Stack</h2>
-            <p className="text-xl mb-8 text-center opacity-90">
-              Built with modern web technologies for the best learning experience
-            </p>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white border-opacity-20">
-                <div className="text-3xl mb-3">⚛️</div>
-                <h4 className="font-bold mb-2">React</h4>
-                <p className="text-sm opacity-90">User interface and component management</p>
-              </div>
-              
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white border-opacity-20">
-                <div className="text-3xl mb-3">🎲</div>
-                <h4 className="font-bold mb-2">Three.js</h4>
-                <p className="text-sm opacity-90">3D graphics and rendering engine</p>
-              </div>
-              
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white border-opacity-20">
-                <div className="text-3xl mb-3">🎨</div>
-                <h4 className="font-bold mb-2">Tailwind CSS</h4>
-                <p className="text-sm opacity-90">Responsive and modern styling</p>
-              </div>
-              
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white border-opacity-20">
-                <div className="text-3xl mb-3">🔧</div>
-                <h4 className="font-bold mb-2">Vite</h4>
-                <p className="text-sm opacity-90">Fast development and build tools</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-3xl shadow-xl p-10 text-center border border-gray-100">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">Get Started Today</h2>
-            <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-              Ready to begin your 3D modeling journey? Start with our interactive playground 
-              or jump into a challenge to test your skills.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="/playground" 
-                className="inline-flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <span className="mr-2 text-xl">🎨</span>
-                Open Playground
-              </a>
-              <a 
-                href="/challenges" 
-                className="inline-flex items-center justify-center bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-amber-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <span className="mr-2 text-xl">🏆</span>
-                View Challenges
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default About;

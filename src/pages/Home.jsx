@@ -14,7 +14,7 @@ const Home = () => {
           
           <h1 className="text-7xl font-bold mb-6 leading-tight">
             <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              CADemy
+              CADemyAI
             </span>
           </h1>
           
@@ -197,7 +197,7 @@ const Home = () => {
 
         {/* Learning Benefits */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Why CADemy?</h2>
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">Why CADemyAI?</h2>
           <p className="text-xl text-gray-600 mb-12">Empowering the next generation of inclusive designers</p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
