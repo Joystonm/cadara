@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const BackendChatService = require('./chatService');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Initialize chat service
+const chatService = new BackendChatService();
 
 app.use(cors());
 app.use(express.json());
@@ -196,7 +200,7 @@ app.post('/api/learning-path/update/:userId', async (req, res) => {
   }
 });
 
-// AI Chatbot endpoint
+// AI Chatbot endpoint with Oumi-style architecture
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, context, conversationHistory } = req.body;
@@ -205,49 +209,16 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    // Build system prompt with CADemy context
-    const systemPrompt = `You are an expert CAD tutor assistant for CADemy, an interactive 3D modeling learning platform.
-
-CADemy Features:
-- Interactive 3D playground with cube, sphere, cylinder, cone shapes
-- Transform tools: move, rotate, scale
-- Boolean operations: union, subtract, intersect
-- Guided tutorials and step-by-step challenges
-- Real-time feedback and progress tracking
-
-Your role:
-- Answer questions about CAD concepts and 3D modeling
-- Help troubleshoot modeling issues
-- Explain challenge requirements
-- Provide step-by-step guidance
-- Suggest next learning steps
-
-Be concise, helpful, and encouraging. Use simple language for beginners.`;
-
-    // Build messages array
-    const messages = [
-      { role: 'system', content: systemPrompt }
-    ];
-
-    // Add conversation history if provided
-    if (conversationHistory && Array.isArray(conversationHistory)) {
-      messages.push(...conversationHistory.slice(-6)); // Keep last 6 messages for context
-    }
-
-    // Add current context if provided
-    if (context) {
-      const contextMsg = `Current context: ${JSON.stringify(context)}`;
-      messages.push({ role: 'system', content: contextMsg });
-    }
-
-    // Add user message
-    messages.push({ role: 'user', content: message });
-
-    // Call Oumi API (placeholder - replace with actual Oumi SDK)
-    const oumiResponse = await callOumiAPI(messages);
+    // Process message through chat service
+    const result = await chatService.processMessage(message, conversationHistory);
 
     res.json({
-      response: oumiResponse.content,
+      response: result.content,
+      provider: result.provider,
+      success: result.success,
+      responseTime: result.responseTime,
+      tokens: result.tokens,
+      fallbackUsed: result.fallbackUsed,
       timestamp: new Date().toISOString()
     });
 
@@ -260,43 +231,54 @@ Be concise, helpful, and encouraging. Use simple language for beginners.`;
   }
 });
 
-// Oumi API integration
-async function callOumiAPI(messages) {
-  const OUMI_API_KEY = process.env.OUMI_API_KEY;
-  
-  if (!OUMI_API_KEY) {
-    throw new Error('OUMI_API_KEY not configured');
+// Chat service health check
+app.get('/api/chat/health', async (req, res) => {
+  try {
+    const status = await chatService.checkProviderHealth();
+    res.json({
+      status: 'ok',
+      providers: status,
+      fallbackChain: chatService.fallbackChain
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      error: error.message
+    });
   }
+});
 
-  // Placeholder implementation - replace with actual Oumi SDK
-  // Example: const response = await oumi.chat.completions.create({ messages, model: 'oumi-v1' });
-  
-  // Mock response for development
-  const userMessage = messages[messages.length - 1].content.toLowerCase();
-  
-  let response = '';
-  if (userMessage.includes('boolean') || userMessage.includes('union') || userMessage.includes('subtract')) {
-    response = 'Boolean operations let you combine shapes! **Union** merges objects, **Subtract** removes one from another, and **Intersect** keeps only overlapping parts. Try selecting two objects and clicking the operation button.';
-  } else if (userMessage.includes('challenge') || userMessage.includes('next')) {
-    response = 'Great question! Complete your current challenge by meeting all requirements, then submit for AI evaluation. Once you pass, the next challenge unlocks automatically. Check the Mission Panel for current objectives.';
-  } else if (userMessage.includes('move') || userMessage.includes('rotate') || userMessage.includes('scale')) {
-    response = 'To transform objects: 1) Select an object by clicking it, 2) Choose Move/Rotate/Scale from the toolbar, 3) Drag the colored arrows/circles to transform. Press ESC to deselect.';
-  } else if (userMessage.includes('error') || userMessage.includes('fix') || userMessage.includes('problem')) {
-    response = 'I can help debug! Common issues: 1) Objects not aligning - use grid snap, 2) Boolean operation failed - ensure objects overlap, 3) Can\'t select object - click directly on the mesh. What specific error are you seeing?';
-  } else {
-    response = `I'm here to help with CADemy! I can assist with:
-- 3D modeling techniques
-- Challenge completion
-- Tool usage (move, rotate, scale)
-- Boolean operations
-- Troubleshooting issues
+// Route to specific provider (for testing)
+app.post('/api/chat/provider/:provider', async (req, res) => {
+  try {
+    const { provider } = req.params;
+    const { message, conversationHistory } = req.body;
 
-What would you like to know?`;
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const result = await chatService.routeToProvider(provider, message, conversationHistory);
+
+    res.json({
+      response: result.content,
+      provider: result.provider,
+      success: result.success,
+      tokens: result.tokens,
+      error: result.error,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Provider routing error:', error);
+    res.status(500).json({ 
+      error: 'Failed to route to provider',
+      message: error.message 
+    });
   }
-
-  return { content: response };
-}
+});
 
 app.listen(PORT, () => {
   console.log(`CADemy Backend running on port ${PORT}`);
+  console.log('Chat service initialized with providers:', Object.keys(chatService.providers));
 });

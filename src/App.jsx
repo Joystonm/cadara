@@ -21,7 +21,7 @@ const AppContent = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 animate-pulse">
             <span className="text-3xl font-bold text-white">C</span>
           </div>
-          <p className="text-gray-600">Loading CADemy...</p>
+          <p className="text-gray-600">Loading Cadara...</p>
         </div>
       </div>
     );

@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-const CADARA_CONTEXT = `Cadara is a 3D modeling education platform with React, Three.js, React Three Fiber. Features: Interactive 3D Environment, Progressive Learning, Challenge-based Learning, Transform Controls (move/rotate/scale). Modes: Playground (free modeling), Challenge (structured learning), Tutorial (guided learning). Tech: React, Three.js, Tailwind CSS, Webpack.`;
+import ChatService from '../services/chatService';
+import chatConfig from '../config/chatConfig';
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [chatService] = useState(() => new ChatService());
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -14,40 +15,6 @@ export default function Chatbot() {
   };
 
   useEffect(scrollToBottom, [messages]);
-
-  const callGroq = async (message) => {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        messages: [{
-          role: 'user',
-          content: `You are an educational 3D-modeling assistant for Cadara. Your responses must always be short, precise, and structured. Do not use stars or decorative formatting.
-
-When answering any question, follow this format:
-- Definition or direct answer (1–2 lines)
-- Key points or types (bullet points, short)
-- Why it matters or where it is used (1–2 lines)
-
-Avoid long paragraphs. Avoid unnecessary explanation. Focus only on clear, factual output.
-Do not introduce yourself or ask what mode the user wants.
-
-Context: ${CADARA_CONTEXT}
-
-User: ${message}`
-        }],
-        temperature: 0.1,
-        max_tokens: 300
-      })
-    });
-    
-    const data = await response.json();
-    return data.choices[0].message.content.trim();
-  };
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
@@ -58,16 +25,26 @@ User: ${message}`
     setLoading(true);
 
     try {
-      const answer = await callGroq(userMessage);
+      // Convert messages to conversation history format
+      const conversationHistory = messages.map(msg => ({
+        role: msg.type === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }));
+
+      const result = await chatService.sendMessage(userMessage, conversationHistory);
+      
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: answer,
-        engine: 'AI'
+        content: result.content,
+        provider: result.provider,
+        success: result.success
       }]);
     } catch (error) {
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: 'Sorry, I encountered an error. Please check your API key and try again.' 
+        content: 'Sorry, I encountered an error. Please check your connection and try again.',
+        provider: 'Error',
+        success: false
       }]);
     } finally {
       setLoading(false);
@@ -113,7 +90,7 @@ User: ${message}`
                 <span className="text-white text-sm font-bold">AI</span>
               </div>
               <div>
-                <h3 className="font-semibold text-white">Cadara Assistant</h3>
+                <h3 className="font-semibold text-white">CADara Assistant</h3>
                 <p className="text-xs text-slate-400">3D modeling expert • Always online</p>
               </div>
               <div className="ml-auto">
@@ -142,7 +119,7 @@ User: ${message}`
                       <div className="w-5 h-5 bg-gradient-to-br from-teal-400 to-blue-500 rounded-md flex items-center justify-center">
                         <span className="text-white text-xs font-bold">AI</span>
                       </div>
-                      <span className="text-xs text-slate-400">Cadara Assistant</span>
+                      <span className="text-xs text-slate-400">CADara Assistant</span>
                     </div>
                   )}
                   <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
@@ -151,10 +128,10 @@ User: ${message}`
                       : 'bg-slate-800/50 backdrop-blur-md border border-slate-700/30 text-slate-100 mr-4'
                   }`}>
                     <div className="whitespace-pre-wrap">{msg.content}</div>
-                    {msg.engine && (
+                    {chatConfig.ui.showProviderInfo && msg.provider && (
                       <div className="text-xs opacity-60 mt-2 flex items-center space-x-1">
-                        <div className="w-1 h-1 bg-current rounded-full"></div>
-                        <span>Powered by {msg.engine}</span>
+                        <div className={`w-1 h-1 rounded-full ${msg.success ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                        <span>via {msg.provider}</span>
                       </div>
                     )}
                   </div>

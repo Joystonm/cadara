@@ -247,8 +247,135 @@ const TutorialScene = () => {
   }
 
   if (!isInteractive) {
-    return <TutorialLanding handleStartTutorial={handleStartTutorial} />
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">CAD Fundamentals Tutorial</h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Master the essential skills of 3D modeling through our comprehensive, hands-on tutorial. 
+              Learn industry-standard CAD concepts step by step.
+            </p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">What You'll Learn</h2>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="p-4 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg">
+                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">🧭</span>
+                </div>
+                <h3 className="font-semibold text-green-800 mb-2">3D Navigation</h3>
+                <p className="text-sm text-green-700">Master viewport controls, coordinate systems, and 3D space orientation.</p>
+              </div>
+              
+              <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg">
+                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">🔷</span>
+                </div>
+                <h3 className="font-semibold text-blue-800 mb-2">Primitive Shapes</h3>
+                <p className="text-sm text-blue-700">Create cubes, spheres, cylinders, and cones - the building blocks of CAD.</p>
+              </div>
+              
+              <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg">
+                <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">🔄</span>
+                </div>
+                <h3 className="font-semibold text-purple-800 mb-2">Transformations</h3>
+                <p className="text-sm text-purple-700">Move, rotate, and scale objects with precision using professional tools.</p>
+              </div>
+              
+              <div className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-lg">
+                <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">🎯</span>
+                </div>
+                <h3 className="font-semibold text-orange-800 mb-2">Precision Work</h3>
+                <p className="text-sm text-orange-700">Learn accurate positioning and measurement techniques for professional results.</p>
+              </div>
+              
+              <div className="p-4 bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg">
+                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">🏗️</span>
+                </div>
+                <h3 className="font-semibold text-red-800 mb-2">Assembly Basics</h3>
+                <p className="text-sm text-red-700">Combine multiple objects to create complex structures and assemblies.</p>
+              </div>
+              
+              <div className="p-4 bg-gradient-to-br from-teal-50 to-teal-100 border border-teal-200 rounded-lg">
+                <div className="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-white text-xl">⚡</span>
+                </div>
+                <h3 className="font-semibold text-teal-800 mb-2">Best Practices</h3>
+                <p className="text-sm text-teal-700">Professional workflow, organization, and design iteration techniques.</p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">Tutorial Overview</h3>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-700 mb-2"><strong>Duration:</strong> 15-20 minutes</p>
+                  <p className="text-gray-700 mb-2"><strong>Difficulty:</strong> Beginner-friendly</p>
+                  <p className="text-gray-700"><strong>Prerequisites:</strong> None required</p>
+                </div>
+                <div>
+                  <p className="text-gray-700 mb-2"><strong>Steps:</strong> 16 interactive lessons</p>
+                  <p className="text-gray-700 mb-2"><strong>Format:</strong> Hands-on practice</p>
+                  <p className="text-gray-700"><strong>Progress:</strong> Self-paced learning</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <button 
+                onClick={handleStartTutorial}
+                className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 font-semibold text-lg shadow-lg transform hover:scale-105"
+              >
+                🚀 Start Interactive Tutorial
+              </button>
+              <p className="text-sm text-gray-500 mt-3">
+                Begin your journey into 3D modeling and CAD design
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">💡 Learning Tips</h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>• Take your time with each step</li>
+                <li>• Practice the mouse controls</li>
+                <li>• Experiment with different positions</li>
+                <li>• Don't hesitate to repeat steps</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">🎮 Controls Preview</h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>• <strong>Left-click + drag:</strong> Rotate view</li>
+                <li>• <strong>Right-click + drag:</strong> Pan view</li>
+                <li>• <strong>Scroll wheel:</strong> Zoom in/out</li>
+                <li>• <strong>Click object:</strong> Select it</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">🏆 After Tutorial</h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>• Explore the Playground mode</li>
+                <li>• Try the Challenge mode</li>
+                <li>• Create your own designs</li>
+                <li>• Build complex assemblies</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
+
   const currentTutorialStep = tutorialSteps[currentStep]
 
   return (
