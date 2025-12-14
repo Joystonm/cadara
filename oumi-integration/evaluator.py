@@ -1,6 +1,5 @@
 """
-Oumi LLM/VLM Integration for CADemy
-Handles geometric reasoning, error detection, and feedback generation
+Oumi LLM/VLM Integration
 """
 
 import json
